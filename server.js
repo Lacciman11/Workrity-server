@@ -19,8 +19,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(morganMiddleware);
 app.use(corsMiddleware);
-app.use(rateLimitMiddleware);
-app.use(securityHeaders);
+// app.use(rateLimitMiddleware);
+// app.use(securityHeaders);
 
 app.use('/api', authRoute); 
 app.use('/api', taskRoute); 
