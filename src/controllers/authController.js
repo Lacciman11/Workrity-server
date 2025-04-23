@@ -42,15 +42,15 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { identifier, password } = req.body; // identifier = email or username
+    const { email, password } = req.body; // identifier = email or username
 
-    if (!identifier || !password) {
+    if (!email || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
     // Check for user by email or username
     const user = await User.findOne({
-      $or: [{ email: identifier }, { username: identifier }]
+      $or: [{ email: identifier }, { username: email }]
     });
 
     if (!user) {
