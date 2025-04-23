@@ -19,8 +19,17 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(morganMiddleware);
 app.use(corsMiddleware);
-// app.use(rateLimitMiddleware);
-// app.use(securityHeaders);
+
+// Preflight CORS middleware for handling OPTIONS requests
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Origin', '*'); // Allow all origins or specify a domain
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return res.status(200).json({});
+  }
+  next();
+});
 
 app.use('/api', authRoute); 
 app.use('/api', taskRoute); 
