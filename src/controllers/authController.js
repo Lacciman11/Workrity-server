@@ -42,7 +42,7 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body; // identifier = email or username
+    const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ error: "All fields are required" });
@@ -50,7 +50,7 @@ const loginUser = async (req, res) => {
 
     // Check for user by email or username
     const user = await User.findOne({
-      $or: [{ email: identifier }, { username: email }]
+      $or: [{ email }, { username: email }]
     });
 
     if (!user) {
@@ -76,14 +76,14 @@ const loginUser = async (req, res) => {
     // Set access token and refresh token as HTTP-only cookies
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure cookies are sent over HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 60 * 60 * 1000, // 1 hour
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Ensure cookies are sent over HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
